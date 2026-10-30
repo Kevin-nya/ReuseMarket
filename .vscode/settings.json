@@ -1,0 +1,5 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.autoClosingQuotes": "always",
+    "editor.autoIndentOnPaste": true
+}

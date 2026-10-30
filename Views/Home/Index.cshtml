@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="market-hero">
+    <div class="hero-content">
+        <span class="hero-label">YOUR MARKETPLACE</span>
+
+        <h1>Find great deals.<br />Give items a second life.</h1>
+
+        <p>
+            Discover affordable products from sellers around you.
+            Buy and sell pre-loved items with ease.
+        </p>
+
+        <form asp-controller="Home" asp-action="Index" method="get"
+              class="market-search">
+            <input type="text" name="search"
+                   placeholder="What are you looking for?" />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</section>
+
+<section class="market-section">
+    <div class="section-heading">
+        <div>
+            <h2>Explore categories</h2>
+            <p>Find something useful for your everyday life.</p>
+        </div>
+    </div>
+
+    <div class="category-grid">
+        <a href="#" class="category-card">
+            <span class="category-icon">💻</span>
+            <span>Electronics</span>
+        </a>
+
+        <a href="#" class="category-card">
+            <span class="category-icon">🛋️</span>
+            <span>Home & Furniture</span>
+        </a>
+
+        <a href="#" class="category-card">
+            <span class="category-icon">👕</span>
+            <span>Fashion</span>
+        </a>
+
+        <a href="#" class="category-card">
+            <span class="category-icon">📚</span>
+            <span>Books & Education</span>
+        </a>
+
+        <a href="#" class="category-card">
+            <span class="category-icon">🛍️</span>
+            <span>General Goods</span>
+        </a>
+    </div>
+</section>
+
+<section class="market-section">
+    <div class="section-heading">
+        <div>
+            <h2>Featured products</h2>
+            <p>Explore a few examples of what our marketplace could offer.</p>
+        </div>
+    </div>
+
+    <div class="product-grid">
+        <article class="product-card">
+            <div class="product-image laptop-image">
+                💻
+                <span class="product-badge"></span>
+            </div>
+            <div class="product-info">
+                <p class="product-category">Electronics</p>
+                <h3>Used Laptop</h3>
+                <p class="product-price">UGX 450,000</p>
+                <p class="product-location">Kampala, Uganda</p>
+            </div>
+        </article>
+
+        <article class="product-card">
+            <div class="product-image furniture-image">🪑</div>
+            <div class="product-info">
+                <p class="product-category">Home & Furniture</p>
+                <h3>Study Chair</h3>
+                <p class="product-price">UGX 80,000</p>
+                <p class="product-location">Kampala, Uganda</p>
+            </div>
+        </article>
+
+        <article class="product-card">
+            <div class="product-image fashion-image">👟</div>
+            <div class="product-info">
+                <p class="product-category">Fashion</p>
+                <h3>Casual Sneakers</h3>
+                <p class="product-price">UGX 60,000</p>
+                <p class="product-location">Kampala, Uganda</p>
+            </div>
+        </article>
+
+        <article class="product-card">
+            <div class="product-image books-image">📚</div>
+            <div class="product-info">
+                <p class="product-category">Books & Education</p>
+                <h3>Programming Books</h3>
+                <p class="product-price">UGX 35,000</p>
+                <p class="product-location">Kampala, Uganda</p>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="sell-banner">
+    <div>
+        <h2>Have something you no longer need?</h2>
+        <p>Turn your unused items into an opportunity.</p>
+    </div>
+    <a href="#" class="sell-button">Sell an item</a>
+</section>

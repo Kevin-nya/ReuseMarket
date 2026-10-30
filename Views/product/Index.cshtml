@@ -1,0 +1,26 @@
+@model List<ReuseMarket.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>ReuseMarket Products</h1>
+
+<div class="container">
+    @foreach (var product in Model)
+    {
+        <div class="card mb-3 p-3">
+
+            <h3>@product.Name</h3>
+
+            <p>@product.Description</p>
+
+            <p><strong>Price:</strong> UGX @product.Price.ToString("N0")</p>
+
+            <p><strong>Category:</strong> @product.Category</p>
+
+            <p><strong>Location:</strong> @product.Location</p>
+
+        </div>
+    }
+</div>
