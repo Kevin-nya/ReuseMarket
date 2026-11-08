@@ -27,6 +27,12 @@
             <p><strong>Category:</strong> @product.Category</p>
 
             <p><strong>Location:</strong> @product.Location</p>
+            <a asp-controller="Product"
+   asp-action="Details"
+   asp-route-id="@product.Id"
+   class="btn btn-primary">
+    View Details
+</a>
 
         </div>
     }

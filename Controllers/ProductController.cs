@@ -23,6 +23,17 @@ namespace ReuseMarket.Controllers
 
             return View(products);
         }
+        public async Task<IActionResult> Details(int id)
+{
+    var product = await _context.Products.FindAsync(id);
+
+    if (product == null)
+    {
+        return NotFound();
+    }
+
+    return View(product);
+}
 
         // Opens the product creation page.
         [HttpGet]

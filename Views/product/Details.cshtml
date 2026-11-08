@@ -1,0 +1,45 @@
+@model ReuseMarket.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-4">
+
+    <div class="row">
+
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl"
+                     alt="@Model.Name"
+                     class="img-fluid rounded" />
+            }
+        </div>
+
+        <div class="col-md-6">
+
+            <h2>@Model.Name</h2>
+
+            <h4 class="text-success">
+                UGX @Model.Price.ToString("N0")
+            </h4>
+
+            <p>@Model.Description</p>
+
+            <p><strong>Category:</strong> @Model.Category</p>
+
+            <p><strong>Location:</strong> @Model.Location</p>
+
+            <p><strong>Date Posted:</strong> @Model.DatePosted.ToString("dd MMM yyyy")</p>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back to Products
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
