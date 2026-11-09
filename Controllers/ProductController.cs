@@ -17,12 +17,28 @@ namespace ReuseMarket.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            var products = await _context.Products.ToListAsync();
+      public async Task<IActionResult> Index(string searchString, string category)
+{
+    var products = _context.Products.AsQueryable();
 
-            return View(products);
-        }
+    // Search products by name
+    if (!string.IsNullOrEmpty(searchString))
+    {
+        products = products.Where(p =>
+            p.Name.ToLower().Contains(searchString.ToLower()));
+    }
+
+    // Filter products by category
+    if (!string.IsNullOrEmpty(category))
+    {
+        products = products.Where(p =>
+            p.Category == category);
+    }
+
+    return View(await products.ToListAsync());
+}
+
+
         public async Task<IActionResult> Details(int id)
 {
     var product = await _context.Products.FindAsync(id);

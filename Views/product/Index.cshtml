@@ -5,6 +5,38 @@
 }
 
 <h1>ReuseMarket Products</h1>
+<form asp-controller="Product" asp-action="Index" method="get" class="mb-4">
+
+    <div class="row g-2">
+
+        <div class="col-md-5">
+            <input type="text"
+                   name="searchString"
+                   value="@Context.Request.Query["searchString"]"
+                   class="form-control"
+                   placeholder="Search for products..." />
+        </div>
+
+        <div class="col-md-4">
+            <select name="category" class="form-select">
+                <option value="">All Categories</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Home and Furniture">Home and Furniture</option>
+                <option value="Fashion">Fashion</option>
+                <option value="Books and Education">Books and Education</option>
+                <option value="General Goods">General Goods</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">
+                Search
+            </button>
+        </div>
+
+    </div>
+
+</form>
 
 <div class="container">
     @foreach (var product in Model)
