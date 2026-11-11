@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using ReuseMarket.Data;
+using Microsoft.AspNetCore.Identity;
+using ReuseMarket.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 // Configure PostgreSQL database connection.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -24,6 +29,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
