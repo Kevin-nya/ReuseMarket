@@ -4,6 +4,9 @@ namespace ReuseMarket.Models
 {
     public class Product
     {
+        public string? SellerId { get; set; }
+
+public ApplicationUser? Seller { get; set; }
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please enter the product name.")]

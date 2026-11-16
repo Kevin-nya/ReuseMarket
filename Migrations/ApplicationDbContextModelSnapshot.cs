@@ -256,7 +256,12 @@ namespace ReuseMarket.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("SellerId")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Products");
                 });
@@ -310,6 +315,15 @@ namespace ReuseMarket.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ReuseMarket.Models.Product", b =>
+                {
+                    b.HasOne("ReuseMarket.Models.ApplicationUser", "Seller")
+                        .WithMany()
+                        .HasForeignKey("SellerId");
+
+                    b.Navigation("Seller");
                 });
 #pragma warning restore 612, 618
         }

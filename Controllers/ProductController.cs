@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +13,14 @@ namespace ReuseMarket.Controllers
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public ProductController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ProductController(
+    ApplicationDbContext context,
+    UserManager<ApplicationUser> userManager)
+{
+    _context = context;
+    _userManager = userManager;
+}
       public async Task<IActionResult> Index(string searchString, string category)
 {
     var products = _context.Products.AsQueryable();
@@ -39,9 +43,11 @@ namespace ReuseMarket.Controllers
 }
 
 
-        public async Task<IActionResult> Details(int id)
+     public async Task<IActionResult> Details(int id)
 {
-    var product = await _context.Products.FindAsync(id);
+    var product = await _context.Products
+        .Include(p => p.Seller)
+        .FirstOrDefaultAsync(p => p.Id == id);
 
     if (product == null)
     {
@@ -49,16 +55,19 @@ namespace ReuseMarket.Controllers
     }
 
     return View(product);
+
 }
 
         // Opens the product creation page.
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         // Receives and saves the submitted product.
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(Product product, IFormFile? imageFile)
         {
@@ -108,11 +117,13 @@ namespace ReuseMarket.Controllers
                 product.ImageUrl = "/images/products/" + uniqueFileName;
             }
 
-            // Save the product to PostgreSQL.
-            _context.Products.Add(product);
+            // Assign the currently logged-in user as the seller.
+product.SellerId = _userManager.GetUserId(User);
 
-            await _context.SaveChangesAsync();
+// Save the product to PostgreSQL.
+_context.Products.Add(product);
 
+await _context.SaveChangesAsync();
             // Return to the products page.
             return RedirectToAction("Index");
         }
