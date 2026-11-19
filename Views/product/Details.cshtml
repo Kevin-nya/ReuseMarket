@@ -39,15 +39,25 @@
                 Back to Products
             </a>
 
-        </div>
-    </div>
+            @if (User.Identity != null &&
+                 User.Identity.IsAuthenticated &&
+                 Model.SellerId == User.FindFirst(
+                     System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+            {
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning">
+                    Edit Product
+                </a>
+                <a asp-action="Delete"
+   asp-route-id="@Model.Id"
+   class="btn btn-danger">
+    Delete Product
+</a>
+            }
 
-    <div class="row mt-4">
-        <div class="col-md-6 offset-md-6">
-
-            <div class="card shadow-sm">
+            <div class="card mt-4">
                 <div class="card-body">
-
                     <h5 class="card-title">Seller Information</h5>
 
                     @if (Model.Seller != null)
@@ -63,7 +73,6 @@
                             Seller information is not available.
                         </p>
                     }
-
                 </div>
             </div>
 

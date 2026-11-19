@@ -23,7 +23,9 @@ namespace ReuseMarket.Controllers
 }
       public async Task<IActionResult> Index(string searchString, string category)
 {
-    var products = _context.Products.AsQueryable();
+    var products = _context.Products
+    .Include(p => p.Seller)
+    .AsQueryable();
 
     // Search products by name
     if (!string.IsNullOrEmpty(searchString))
@@ -56,6 +58,122 @@ namespace ReuseMarket.Controllers
 
     return View(product);
 
+}
+// Opens the product editing page.
+[HttpGet]
+[Authorize]
+public async Task<IActionResult> Edit(int id)
+{
+    var product = await _context.Products
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    if (product == null)
+    {
+        return NotFound();
+    }
+
+    // Ensure only the seller can edit this product.
+    var userId = _userManager.GetUserId(User);
+
+    if (product.SellerId != userId)
+    {
+        return Forbid();
+    }
+
+    return View(product);
+}
+// Receives and saves the edited product.
+[HttpPost]
+[Authorize]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Edit(int id, Product product)
+{
+    if (id != product.Id)
+    {
+        return BadRequest();
+    }
+
+    var existingProduct = await _context.Products
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    if (existingProduct == null)
+    {
+        return NotFound();
+    }
+
+    // Ensure only the original seller can edit the product.
+    var userId = _userManager.GetUserId(User);
+
+    if (existingProduct.SellerId != userId)
+    {
+        return Forbid();
+    }
+
+    if (!ModelState.IsValid)
+    {
+        return View(product);
+    }
+
+    // Update only the permitted product fields.
+    existingProduct.Name = product.Name;
+    existingProduct.Description = product.Description;
+    existingProduct.Price = product.Price;
+    existingProduct.Category = product.Category;
+    existingProduct.Location = product.Location;
+
+    await _context.SaveChangesAsync();
+
+    return RedirectToAction("Details", new { id = existingProduct.Id });
+}
+// Opens the product deletion confirmation page.
+[HttpGet]
+[Authorize]
+public async Task<IActionResult> Delete(int id)
+{
+    var product = await _context.Products
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    if (product == null)
+    {
+        return NotFound();
+    }
+
+    var userId = _userManager.GetUserId(User);
+
+    if (product.SellerId != userId)
+    {
+        return Forbid();
+    }
+
+    return View(product);
+}
+ // Receives the deletion confirmation.
+[HttpPost, ActionName("Delete")]
+[Authorize]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DeleteConfirmed(int id)
+{
+    var product = await _context.Products
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    if (product == null)
+    {
+        return NotFound();
+    }
+
+    // Verify that the logged-in user owns this product.
+    var userId = _userManager.GetUserId(User);
+
+    if (product.SellerId != userId)
+    {
+        return Forbid();
+    }
+
+    _context.Products.Remove(product);
+
+    await _context.SaveChangesAsync();
+
+    return RedirectToAction("Index");
 }
 
         // Opens the product creation page.
