@@ -12,5 +12,6 @@ namespace ReuseMarket.Data
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }
